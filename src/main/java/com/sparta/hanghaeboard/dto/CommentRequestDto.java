@@ -7,10 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BoardRequestDto {
-
-    private String title;
-
-    private String contents;
-
+public class CommentRequestDto {
+    private String comment;
 }
