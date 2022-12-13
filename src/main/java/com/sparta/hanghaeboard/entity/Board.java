@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
+import java.util.List;
 
 
 @Getter
@@ -30,9 +30,12 @@ public class Board extends Timestamped {
 //    @Column(nullable = false)
 //    private String password;
 
-    @Column(nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.EAGER)  // 가져와야 할 user는 하나밖에 없으니 바로 가져올게
+    @JoinColumn(name = "user_id")
+    private User user;
 
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
+    private List<Comment> comments;
 
     //생성자
     public Board(BoardRequestDto requestDto) {
@@ -40,12 +43,12 @@ public class Board extends Timestamped {
         this.contents = requestDto.getContents();
     }
 
-    public Board(BoardRequestDto requestDto, String username, Long id) {
+    public Board(BoardRequestDto requestDto, User user) {
         super();
         this.title = requestDto.getTitle();
         this.contents = requestDto.getContents();
-        this.username = username;
-        this.userId = id;
+        this.username = user.getUsername();
+        this.user = user;
     }
 
 

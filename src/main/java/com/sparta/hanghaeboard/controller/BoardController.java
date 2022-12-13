@@ -1,15 +1,13 @@
 package com.sparta.hanghaeboard.controller;
 
 
-import com.sparta.hanghaeboard.dto.BoardListResponseDto;
-import com.sparta.hanghaeboard.dto.BoardRequestDto;
-import com.sparta.hanghaeboard.dto.BoardResponseDto;
-import com.sparta.hanghaeboard.dto.ResponseDto;
+import com.sparta.hanghaeboard.dto.*;
 import com.sparta.hanghaeboard.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")   //아래 url에서 공통인 부분
@@ -28,7 +26,7 @@ public class BoardController {
 
     //**게시글 전체 조회**
     @GetMapping("/boards")
-    public BoardListResponseDto getBoards() {
+    public List<BoardResponseDto> getBoards() {
         return boardService.getBoards();
     }
 
@@ -52,6 +50,27 @@ public class BoardController {
         return boardService.deleteBoard(id, request);
     }
 
+    //**코멘트 작성**
+    @PostMapping("/comment/{id}")
+    public CommentResponseDto createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto,  HttpServletRequest request){
+        return boardService.createComment(id, requestDto, request);
+    }
 
-}
+    //**코멘트 수정**
+    @PutMapping("/comment/{comment_id}")
+    public CommentResponseDto updateComment(@PathVariable Long comment_id, @RequestBody CommentRequestDto requestDto, HttpServletRequest request ) {
+        return boardService.updateComment(comment_id, requestDto, request);
+    }
+
+
+    //**코멘트 삭제**
+    @DeleteMapping("/comment/{comment_id}")
+    public ResponseDto deleteComment(@PathVariable Long comment_id, HttpServletRequest request) {
+        return boardService.deleteComment(comment_id, request);
+    }
+
+
+    }
+
+
 
